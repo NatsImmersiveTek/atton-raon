@@ -141,7 +141,16 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 16px;
-  padding: 10px 0;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.shows-list li:first-child {
+  padding-top: 0;
+}
+
+.shows-list li:last-child {
+  border-bottom: none;
 }
 
 .show-date {
