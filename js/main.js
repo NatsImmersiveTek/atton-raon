@@ -14,7 +14,7 @@ const SHOW_PAST_SHOWS = false;
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Background video: fade it in once Vimeo's iframe has loaded. Until then
+// Background video: fade it in once the iframe has loaded. Until then
 // the background is plain black.
 const bgVideo = document.getElementById("bg-video");
 if (bgVideo) {
@@ -22,27 +22,43 @@ if (bgVideo) {
 }
 
 // Sound toggle: the video autoplays muted (required by every browser), this
-// button lets a visitor turn it on — needs the Vimeo Player SDK (loaded via
-// <script> before this file) to control the iframe after the fact.
+// button lets a visitor turn it on — needs the YouTube IFrame Player API
+// (loaded via <script src="https://www.youtube.com/iframe_api"> in
+// index.html) to control the embed after the fact. That script loads
+// asynchronously and calls window.onYouTubeIframeAPIReady once it's ready.
 const muteBtn = document.getElementById("mute-toggle");
-if (muteBtn && bgVideo && window.Vimeo) {
-  const player = new Vimeo.Player(bgVideo);
-  let muted = true;
+if (muteBtn && bgVideo) {
+  window.onYouTubeIframeAPIReady = () => {
+    new YT.Player(bgVideo, {
+      events: {
+        onReady: (event) => {
+          const player = event.target;
+          let muted = true;
 
-  muteBtn.addEventListener("click", () => {
-    muted = !muted;
-    player.setMuted(muted);
-    muteBtn.classList.toggle("is-muted", muted);
-    muteBtn.setAttribute("aria-pressed", String(muted));
-    muteBtn.setAttribute(
-      "aria-label",
-      muted ? "Unmute background video" : "Mute background video"
-    );
-  });
-} else if (muteBtn) {
-  // Vimeo SDK failed to load (e.g. offline) — hide the control rather than
-  // show a button that does nothing.
-  muteBtn.hidden = true;
+          muteBtn.addEventListener("click", () => {
+            muted = !muted;
+            if (muted) {
+              player.mute();
+            } else {
+              player.unMute();
+            }
+            muteBtn.classList.toggle("is-muted", muted);
+            muteBtn.setAttribute("aria-pressed", String(muted));
+            muteBtn.setAttribute(
+              "aria-label",
+              muted ? "Unmute background video" : "Mute background video"
+            );
+          });
+        },
+      },
+    });
+  };
+
+  // If the API script fails to load at all (e.g. offline), don't leave a
+  // dead button on screen.
+  setTimeout(() => {
+    if (!window.YT) muteBtn.hidden = true;
+  }, 5000);
 }
 
 const listEl = document.getElementById("shows-list");

@@ -60,15 +60,18 @@ site picks it up on next page load. No redeploy needed.
 
 All in [index.html](index.html):
 
-- **Background video**: find `VIMEO_ID` near the top of the `<body>` (inside
-  `.bg-media`) and replace it with your Vimeo video ID (the number in the
-  video's URL, e.g. `vimeo.com/123456789` → `123456789`). It plays as the
-  full-page background — muted, looping, no controls (that's what Vimeo's
-  `?background=1` does) — cropped to fill the screen without ever squashing
-  it. The background is plain black until Vimeo's player has loaded, then
-  the video fades in. Every browser blocks autoplaying video with sound, so
-  it starts muted — the speaker icon top-right (`#mute-toggle` in
-  `index.html`) lets visitors turn sound on, via the Vimeo Player SDK.
+- **Background video**: find the YouTube video ID near the top of the
+  `<body>` (inside `.bg-media`, in the `#bg-video` iframe's `src`) and
+  replace it with your own (the part after `youtu.be/` or `v=` in the
+  video's URL). It plays as the full-page background — muted, looping, no
+  controls — cropped to fill the screen without ever squashing it. The
+  background is plain black until the player has loaded, then the video
+  fades in. Every browser blocks autoplaying video with sound, so it starts
+  muted — the speaker icon top-right (`#mute-toggle` in `index.html`) lets
+  visitors turn sound on, via the YouTube IFrame Player API.
+  - Swapping to a different video is just changing the ID in two places in
+    that same `src` URL: once after `/embed/`, and once in `playlist=` (that
+    second one is what makes a single video loop — YouTube requires it).
 - **Text**: hero tagline and the About paragraph are plain HTML — edit directly.
   - **Note**: the site title ("ATTON RAON") appears in two places, edit both:
     `<title>` in the `<head>`, and the `<h1>` in the hero.
@@ -99,7 +102,7 @@ All in [index.html](index.html):
 
 - No build tools, no npm dependencies, no framework — just HTML/CSS/JS. There's
   nothing to break or go out of date.
-- The video is embedded (Vimeo), not hosted here — keeps the page tiny and
+- The video is embedded (YouTube), not hosted here — keeps the page tiny and
   avoids any bandwidth limits, even used full-screen as a background.
 - Shows come from a live-fetched Google Sheet CSV rather than a CMS — your
   client edits a spreadsheet they already know how to use, and there's no

@@ -10,8 +10,8 @@
      QUICK-EDIT GUIDE (no coding needed beyond this):
      1. Replace "Atton=Raon" in the <title> and the hero <h1> with your
         act's name.
-     2. Swap the VIMEO_ID below for your video (search "VIMEO_ID" in this file)
-        — this is now the full-page background, not a section.
+     2. Swap the YouTube video ID below for your video (search "bg-video" in
+        this file) — this is the full-page background, not a section.
      3. Fill in the tagline, About text, and the Vimeo / Bandcamp links.
      4. Upcoming shows are NOT edited here — see README.md, they come
         live from a Google Sheet your client can edit directly.
@@ -25,13 +25,13 @@
      Purely decorative, hidden from screen readers. -->
 <div class="bg-media" aria-hidden="true">
   <div class="bg-video-frame">
-    <!-- Placeholder video — replace 223777825 with your own Vimeo video ID
-         (the number in the video's URL) when ready. -->
+    <!-- Placeholder video — replace PfXd4pUWgOE with your own YouTube video
+         ID (the part after youtu.be/ or v= in the video's URL) when ready. -->
     <iframe
       id="bg-video"
-      src="https://player.vimeo.com/video/223777825?background=1"
+      src="https://www.youtube.com/embed/PfXd4pUWgOE?autoplay=1&mute=1&loop=1&playlist=PfXd4pUWgOE&controls=0&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&disablekb=1&fs=0&enablejsapi=1"
       title=""
-      allow="autoplay; fullscreen; picture-in-picture">
+      allow="autoplay; encrypted-media; picture-in-picture">
     </iframe>
   </div>
   <div class="bg-scrim"></div>
@@ -93,7 +93,7 @@
   <p>&copy; <span id="year"></span> Atton=Raon.</p>
 </footer>
 
-<script src="https://player.vimeo.com/api/player.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
