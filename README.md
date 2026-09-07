@@ -1,4 +1,4 @@
-# Atton Raon — landing site
+# Atton=Raon — landing site
 
 A single static page (no build step, no backend, no framework). Free to host,
 loads fast, and your client can add/update upcoming shows just by editing a
