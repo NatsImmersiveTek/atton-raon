@@ -48,14 +48,14 @@ site picks it up on next page load. No redeploy needed.
 
 All in [index.html](index.html):
 
-- **Video**: find `VIDEO_ID` in the `<iframe>` and replace it with your
-  YouTube video ID (the part after `v=` in a YouTube URL). For Vimeo, swap
-  the iframe `src` for `https://player.vimeo.com/video/VIDEO_ID`.
+- **Video**: find `VIMEO_ID` in the `<iframe>` and replace it with your
+  Vimeo video ID (the number in the video's URL, e.g. `vimeo.com/123456789`
+  → `123456789`).
 - **Text**: hero tagline and the About paragraph are plain HTML — edit directly.
   - **Note**: the site title ("ATTON RAON") appears in three separate places, edit all three: 
     `<title>` in the `<head>`, `.logo` in the header, and `<h1>` in the hero.
 - **Links**: edit the `<ul class="links-list">` items — swap `href="#"` for
-  real URLs (Instagram, Spotify, etc.) and the `mailto:` for a real email.
+  your real Vimeo and Bandcamp URLs.
 
 ## 3. Host it for free on GitHub Pages
 
@@ -81,8 +81,8 @@ All in [index.html](index.html):
 
 - No build tools, no npm dependencies, no framework — just HTML/CSS/JS. There's
   nothing to break or go out of date.
-- The video is embedded (YouTube/Vimeo), not hosted here — keeps the page
-  tiny and avoids any bandwidth limits.
+- The video is embedded (Vimeo), not hosted here — keeps the page tiny and
+  avoids any bandwidth limits.
 - Shows come from a live-fetched Google Sheet CSV rather than a CMS — your
   client edits a spreadsheet they already know how to use, and there's no
   login system, database, or admin panel to maintain.
