@@ -61,7 +61,7 @@ body {
   background: rgba(0, 0, 0, 0.5);
 }
 
-main, header, footer {
+main, footer {
   max-width: 720px;
   margin: 0 auto;
   padding: 0 20px;
@@ -76,16 +76,6 @@ a:hover {
   color: #000;
 }
 
-header {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
 h1, h2 {
   font-weight: bold;
   text-transform: uppercase;
@@ -93,7 +83,7 @@ h1, h2 {
 }
 
 .hero {
-  padding: 40px 0;
+  padding: 60px 0 40px;
 }
 
 .hero h1 {

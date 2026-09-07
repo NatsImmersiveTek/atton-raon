@@ -60,8 +60,8 @@ All in [index.html](index.html):
   fades in over it once Vimeo's player has loaded, so there's no blank gap
   on a slow connection.
 - **Text**: hero tagline and the About paragraph are plain HTML — edit directly.
-  - **Note**: the site title ("ATTON RAON") appears in three separate places, edit all three: 
-    `<title>` in the `<head>`, `.logo` in the header, and `<h1>` in the hero.
+  - **Note**: the site title ("ATTON RAON") appears in two places, edit both:
+    `<title>` in the `<head>`, and the `<h1>` in the hero.
 - **Links**: edit the `<ul class="links-list">` items — swap `href="#"` for
   your real Vimeo and Bandcamp URLs.
 
