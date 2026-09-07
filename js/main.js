@@ -56,7 +56,7 @@ function renderShows(rows) {
   const idx = {
     date: header.findIndex((h) => h.includes("date")),
     venue: header.findIndex((h) => h.includes("venue")),
-    city: header.findIndex((h) => h.includes("city")),
+    city: header.findIndex((h) => h.includes("city") || h.includes("location")),
     link: header.findIndex((h) => h.includes("link") || h.includes("ticket")),
   };
 

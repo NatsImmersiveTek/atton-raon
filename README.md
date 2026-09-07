@@ -22,7 +22,9 @@ js/main.js      fetches the Google Sheet and renders the shows list
    | 2026-11-02 | Echo Lounge     | Atlanta, GA   | https://tickets.example  |
 
    - Column names can be in any order, and any case — the code just looks
-     for columns containing "date", "venue", "city", "link"/"ticket".
+     for columns containing "date", "venue", "city" (or "location"), and
+     "link" (or "ticket"). Anything else in the header name is fine, e.g.
+     "Ticket Link" or "City/Location" both still match.
    - Use a real date format like `2026-10-14` or `Oct 14, 2026` — anything
      JavaScript's `Date` parser understands. This lets the site sort shows
      automatically and hide past ones.
