@@ -14,24 +14,16 @@ const SHOW_PAST_SHOWS = false;
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Background video: fade it in only once YouTube confirms it's actually
-// playing (not just once the iframe's own HTML has loaded — that fires
-// before the video itself has buffered/rendered a frame, which was
-// revealing a still-black player and briefly washing out the title's
-// color-invert blend). A fallback timer covers the rare case where the
-// Player API never reports a state change at all.
+// Background video: fade it in after a fixed delay. Neither the iframe's
+// own "load" event nor YouTube's onStateChange=PLAYING line up with when a
+// frame is actually visibly painted — both fire while the player is still
+// internally black/buffering, which was revealing the video (and running
+// the title's color-invert blend) a few seconds before there was real
+// color behind it. A flat delay sidesteps that mismatch entirely: the
+// background just stays solid black, then cuts over once, fully formed.
 const bgVideo = document.getElementById("bg-video");
-let videoRevealed = false;
-function revealVideo() {
-  if (videoRevealed) return;
-  videoRevealed = true;
-  bgVideo.classList.add("loaded");
-}
-
 if (bgVideo) {
-  bgVideo.addEventListener("load", () => {
-    setTimeout(revealVideo, 4000);
-  });
+  setTimeout(() => bgVideo.classList.add("loaded"), 3200);
 }
 
 // Sound toggle: the video autoplays muted (required by every browser), this
@@ -62,11 +54,6 @@ if (muteBtn && bgVideo) {
               muted ? "Unmute background video" : "Mute background video"
             );
           });
-        },
-        onStateChange: (event) => {
-          if (event.data === YT.PlayerState.PLAYING) {
-            revealVideo();
-          }
         },
       },
     });
