@@ -28,21 +28,24 @@ js/main.js      fetches the Google Sheet and renders the shows list
      automatically and hide past ones.
    - `Link` is optional — leave it blank if there's nothing to link to yet.
 
-2. In the Sheet: **File → Share → Publish to web**.
-   - Under "Link", pick the specific sheet/tab (not "Entire document").
-   - Under format, choose **Comma-separated values (.csv)**.
-   - Click **Publish**, copy the URL it gives you.
-
-3. Open [js/main.js](js/main.js) and paste that URL into:
+2. Click **Share** (top right) and set access to **"Anyone with the link" — Viewer**.
+3. The site already points at this sheet — [js/main.js](js/main.js) has:
    ```js
-   const SHEET_CSV_URL = "PASTE_URL_HERE";
+   const SHEET_CSV_URL =
+     "https://docs.google.com/spreadsheets/d/1kEVKSjJUoWPGGQE3tvs28IfxWiG1bzSduRx35UWwz9g/export?format=csv&gid=0";
    ```
+   If you ever swap to a different sheet, just replace the ID in that URL
+   (the long string of characters between `/d/` and `/export`) and, if your
+   show data lives on a tab other than the first one, update `gid=0` to that
+   tab's gid (visible in the tab's URL when you click on it in Google Sheets).
 
 That's it — from now on, your client just edits rows in the Sheet and the
 site picks it up on next page load. No redeploy needed.
 
-> Anyone with the published CSV link can read the sheet's contents (read-only,
-> and only the columns you put in it). Don't put anything sensitive in it.
+> Anyone with the link can read the sheet's contents (read-only, and only
+> the columns you put in it). Don't put anything sensitive in it.
+> Right now the sheet is empty — add the header row (Date, Venue, City, Link)
+> plus one row per show and the site will pick it up automatically.
 
 ## 2. Edit the page content (video, text, links)
 

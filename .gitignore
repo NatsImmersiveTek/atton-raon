@@ -1,0 +1,4 @@
+# Original full-resolution source photos — only the compressed
+# versions in assets/ are meant to ship on the site.
+DSC*.JPG
+DSC*.jpg

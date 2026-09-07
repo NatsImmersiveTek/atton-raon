@@ -1,13 +1,12 @@
 // ============================================================
 // CONFIG — the only line you need to touch to hook up shows.
 // ============================================================
-// 1. Create a Google Sheet with columns: Date, Venue, City, Link
-//    (column order doesn't matter, names are matched case-insensitively).
-// 2. File > Share > Publish to web > choose the sheet tab >
-//    format "Comma-separated values (.csv)" > Publish.
-// 3. Paste the resulting URL below.
+// Sheet columns: Date, Venue, City, Link (order/case don't matter).
+// Sharing on the sheet must be set to "Anyone with the link — Viewer"
+// (Share button, top right of the sheet) for this URL to work.
 // Full walkthrough in README.md.
-const SHEET_CSV_URL = "";
+const SHEET_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/1kEVKSjJUoWPGGQE3tvs28IfxWiG1bzSduRx35UWwz9g/export?format=csv&gid=0";
 
 // Set to true to keep showing past-dated shows instead of hiding them.
 const SHOW_PAST_SHOWS = false;
