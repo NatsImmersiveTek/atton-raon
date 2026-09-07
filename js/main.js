@@ -21,6 +21,30 @@ if (bgVideo) {
   bgVideo.addEventListener("load", () => bgVideo.classList.add("loaded"));
 }
 
+// Sound toggle: the video autoplays muted (required by every browser), this
+// button lets a visitor turn it on — needs the Vimeo Player SDK (loaded via
+// <script> before this file) to control the iframe after the fact.
+const muteBtn = document.getElementById("mute-toggle");
+if (muteBtn && bgVideo && window.Vimeo) {
+  const player = new Vimeo.Player(bgVideo);
+  let muted = true;
+
+  muteBtn.addEventListener("click", () => {
+    muted = !muted;
+    player.setMuted(muted);
+    muteBtn.classList.toggle("is-muted", muted);
+    muteBtn.setAttribute("aria-pressed", String(muted));
+    muteBtn.setAttribute(
+      "aria-label",
+      muted ? "Unmute background video" : "Mute background video"
+    );
+  });
+} else if (muteBtn) {
+  // Vimeo SDK failed to load (e.g. offline) — hide the control rather than
+  // show a button that does nothing.
+  muteBtn.hidden = true;
+}
+
 const listEl = document.getElementById("shows-list");
 
 if (!SHEET_CSV_URL) {

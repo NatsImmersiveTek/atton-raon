@@ -37,6 +37,13 @@
   <div class="bg-scrim"></div>
 </div>
 
+<!-- Background video is muted by default (autoplay policy) — this lets
+     visitors turn sound on. -->
+<button id="mute-toggle" class="mute-toggle is-muted" type="button" aria-pressed="true" aria-label="Unmute background video">
+  <svg class="icon icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
+  <svg class="icon icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+</button>
+
 <main>
 
   <!-- HERO -->
@@ -74,6 +81,7 @@
   <p>&copy; <span id="year"></span> Atton Raon.</p>
 </footer>
 
+<script src="https://player.vimeo.com/api/player.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

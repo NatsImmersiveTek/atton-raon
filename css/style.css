@@ -55,6 +55,37 @@ body {
   background: rgba(0, 0, 0, 0.5);
 }
 
+.mute-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 5;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #fff;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+.mute-toggle:hover {
+  background: #fff;
+  color: #000;
+}
+
+.mute-toggle .icon {
+  width: 22px;
+  height: 22px;
+  display: none;
+}
+
+.mute-toggle.is-muted .icon-muted { display: block; }
+.mute-toggle:not(.is-muted) .icon-unmuted { display: block; }
+
 main, footer {
   max-width: 720px;
   margin: 0 auto;

@@ -59,7 +59,9 @@ All in [index.html](index.html):
   full-page background — muted, looping, no controls (that's what Vimeo's
   `?background=1` does) — cropped to fill the screen without ever squashing
   it. The background is plain black until Vimeo's player has loaded, then
-  the video fades in.
+  the video fades in. Every browser blocks autoplaying video with sound, so
+  it starts muted — the speaker icon top-right (`#mute-toggle` in
+  `index.html`) lets visitors turn sound on, via the Vimeo Player SDK.
 - **Text**: hero tagline and the About paragraph are plain HTML — edit directly.
   - **Note**: the site title ("ATTON RAON") appears in two places, edit both:
     `<title>` in the `<head>`, and the `<h1>` in the hero.
