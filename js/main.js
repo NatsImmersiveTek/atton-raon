@@ -127,7 +127,7 @@ function renderShows(rows) {
         : escapeHTML(s.dateRaw);
 
       const linkHTML = s.link
-        ? `<a class="show-link" href="${escapeAttr(s.link)}" target="_blank" rel="noopener">Details</a>`
+        ? `<a class="show-link" href="${escapeAttr(s.link)}" target="_blank" rel="noopener">Get Tickets</a>`
         : "";
 
       return `<li>
