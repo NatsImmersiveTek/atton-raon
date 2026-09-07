@@ -95,8 +95,7 @@ function renderShows(rows) {
     }));
 
   shows.forEach((s) => {
-    const parsed = new Date(s.dateRaw);
-    s.date = isNaN(parsed) ? null : parsed;
+    s.date = parseShowDate(s.dateRaw);
   });
 
   if (!SHOW_PAST_SHOWS) {
@@ -138,6 +137,37 @@ function renderShows(rows) {
       </li>`;
     })
     .join("");
+}
+
+// Parses a show date from the sheet. Numeric dates with dot/slash/dash
+// separators (e.g. "23.02.2026") are read as DAY.MONTH.YEAR — that format
+// is genuinely ambiguous to JavaScript's built-in parser (it guesses
+// month-first and gets it wrong, or fails outright), so we resolve it
+// explicitly instead of guessing. ISO dates (2026-02-23) and written-out
+// dates (23 Feb 2026 / Feb 23, 2026) aren't ambiguous and pass straight
+// through to the native parser.
+function parseShowDate(raw) {
+  const s = raw.trim();
+  if (!s) return null;
+
+  const numeric = s.match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})$/);
+  if (numeric) {
+    const day = Number(numeric[1]);
+    const month = Number(numeric[2]);
+    const year = Number(numeric[3]);
+    if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+    const d = new Date(year, month - 1, day);
+    return isNaN(d) ? null : d;
+  }
+
+  const iso = s.match(/^(\d{4})[.\/-](\d{1,2})[.\/-](\d{1,2})$/);
+  if (iso) {
+    const d = new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+    return isNaN(d) ? null : d;
+  }
+
+  const fallback = new Date(s);
+  return isNaN(fallback) ? null : fallback;
 }
 
 // Minimal CSV parser: handles quoted fields, escaped quotes, commas/newlines inside quotes.

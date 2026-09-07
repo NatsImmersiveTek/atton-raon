@@ -25,9 +25,16 @@ js/main.js      fetches the Google Sheet and renders the shows list
      for columns containing "date", "venue", "city" (or "location"), and
      "link" (or "ticket"). Anything else in the header name is fine, e.g.
      "Ticket Link" or "City/Location" both still match.
-   - Use a real date format like `2026-10-14` or `Oct 14, 2026` — anything
-     JavaScript's `Date` parser understands. This lets the site sort shows
-     automatically and hide past ones.
+   - **Date format** — any of these work:
+     - `DD.MM.YYYY` (also accepts `/` or `-`), e.g. `23.02.2026` = 23 Feb 2026
+     - `YYYY-MM-DD` (ISO), e.g. `2026-02-23`
+     - Written out: `23 Feb 2026` or `Feb 23, 2026`
+     - Whichever style you use, be consistent — a plain numeric date like
+       `3.13.2026` is genuinely ambiguous (is `13` a month or a day?) and
+       will be rejected rather than guessed at wrong. If a show doesn't show
+       up, check its date is a real day.month.year first.
+   - This date is what lets the site sort shows chronologically and
+     auto-hide past ones — soonest show always on top.
    - `Link` is optional — leave it blank if there's nothing to link to yet.
 
 2. Click **Share** (top right) and set access to **"Anyone with the link" — Viewer**.
