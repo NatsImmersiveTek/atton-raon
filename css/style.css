@@ -52,7 +52,11 @@ body {
 .bg-scrim {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  /* Kept light: this darkens the video toward black before the hero title's
+     invert blend runs, and a heavier scrim skews that blend result toward
+     white in dark scenes. A light scrim still keeps plain (non-blended)
+     text elsewhere readable. */
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .mute-toggle {
