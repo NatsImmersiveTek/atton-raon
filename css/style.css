@@ -14,20 +14,14 @@ body {
   background: #000;
 }
 
-/* Full-viewport background: photo shows first (fast, local), video fades
-   in on top once Vimeo's iframe has loaded. Fixed behind all content. */
+/* Full-viewport background: plain black until Vimeo's iframe has loaded,
+   then the video fades in. Fixed behind all content. */
 .bg-media {
   position: fixed;
   inset: 0;
   z-index: -1;
   overflow: hidden;
   background: #000;
-}
-
-.bg-image {
-  position: absolute;
-  inset: 0;
-  background: url("../assets/bg.jpg") center / cover no-repeat;
 }
 
 .bg-video-frame {

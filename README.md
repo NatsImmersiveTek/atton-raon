@@ -58,9 +58,8 @@ All in [index.html](index.html):
   video's URL, e.g. `vimeo.com/123456789` → `123456789`). It plays as the
   full-page background — muted, looping, no controls (that's what Vimeo's
   `?background=1` does) — cropped to fill the screen without ever squashing
-  it. The background photo (`assets/bg.jpg`) shows instantly and the video
-  fades in over it once Vimeo's player has loaded, so there's no blank gap
-  on a slow connection.
+  it. The background is plain black until Vimeo's player has loaded, then
+  the video fades in.
 - **Text**: hero tagline and the About paragraph are plain HTML — edit directly.
   - **Note**: the site title ("ATTON RAON") appears in two places, edit both:
     `<title>` in the `<head>`, and the `<h1>` in the hero.

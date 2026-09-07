@@ -15,7 +15,7 @@ const SHOW_PAST_SHOWS = false;
 document.getElementById("year").textContent = new Date().getFullYear();
 
 // Background video: fade it in once Vimeo's iframe has loaded. Until then
-// the background photo (set in CSS, loads instantly) stays visible.
+// the background is plain black.
 const bgVideo = document.getElementById("bg-video");
 if (bgVideo) {
   bgVideo.addEventListener("load", () => bgVideo.classList.add("loaded"));
