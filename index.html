@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atton Raon</title>
+<meta name="description" content="Official site — music, videos, and upcoming shows.">
+
+<!-- ============================================================
+     QUICK-EDIT GUIDE (no coding needed beyond this):
+     1. Replace "Atton Raon" everywhere with your act's name.
+     2. Swap the YouTube video ID below (search "VIDEO ID" in this file).
+     3. Update the links in the "Links" section.
+     4. Upcoming shows are NOT edited here — see README.md, they come
+        live from a Google Sheet your client can edit directly.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <span class="logo">ATTON RAON</span>
+    <nav>
+      <a href="#video">Video</a>
+      <a href="#shows">Shows</a>
+      <a href="#links">Links</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <h1>ATTON RAON</h1>
+      <p class="tagline">Short one-line description of the act / project goes here.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#video">Watch</a>
+        <a class="btn btn-outline" href="#shows">See shows</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section id="video" class="section">
+    <div class="wrap">
+      <h2>Latest</h2>
+      <div class="video-frame">
+        <!-- Replace VIDEO_ID with your YouTube video ID (the part after v= in the URL) -->
+        <iframe
+          src="https://www.youtube.com/embed/VIDEO_ID"
+          title="Video"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / TEXT -->
+  <section class="section alt">
+    <div class="wrap narrow">
+      <h2>About</h2>
+      <p>
+        Put your bio / project description here. Keep it a short paragraph or
+        two — this is a landing page, not a full site. Talk about who you are,
+        what you make, and why someone should stick around.
+      </p>
+    </div>
+  </section>
+
+  <!-- UPCOMING SHOWS (loaded live from a Google Sheet, see README.md) -->
+  <section id="shows" class="section">
+    <div class="wrap narrow">
+      <h2>Upcoming Shows</h2>
+      <ul id="shows-list" class="shows-list">
+        <li class="shows-status">Loading shows…</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- LINKS -->
+  <section id="links" class="section alt">
+    <div class="wrap narrow">
+      <h2>Links</h2>
+      <ul class="links-list">
+        <li><a href="#" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="#" target="_blank" rel="noopener">Spotify</a></li>
+        <li><a href="#" target="_blank" rel="noopener">YouTube</a></li>
+        <li><a href="mailto:you@example.com">Contact</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>&copy; <span id="year"></span> Atton Raon.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
