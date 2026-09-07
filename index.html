@@ -9,7 +9,8 @@
 <!-- ============================================================
      QUICK-EDIT GUIDE (no coding needed beyond this):
      1. Replace "Atton Raon" everywhere with your act's name.
-     2. Swap the VIMEO_ID below for your video (search "VIMEO_ID" in this file).
+     2. Swap the VIMEO_ID below for your video (search "VIMEO_ID" in this file)
+        — this is now the full-page background, not a section.
      3. Update the Vimeo / Bandcamp links near the bottom.
      4. Upcoming shows are NOT edited here — see README.md, they come
         live from a Google Sheet your client can edit directly.
@@ -18,6 +19,22 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+<!-- BACKGROUND: photo shows immediately, video fades in on top once it's
+     loaded. Purely decorative, hidden from screen readers. -->
+<div class="bg-media" aria-hidden="true">
+  <div class="bg-image"></div>
+  <div class="bg-video-frame">
+    <!-- Replace VIMEO_ID with your Vimeo video ID (the number in the video's URL) -->
+    <iframe
+      id="bg-video"
+      src="https://player.vimeo.com/video/VIMEO_ID?background=1"
+      title=""
+      allow="autoplay; fullscreen; picture-in-picture">
+    </iframe>
+  </div>
+  <div class="bg-scrim"></div>
+</div>
 
 <header>
   <span class="logo">ATTON RAON</span>
@@ -29,21 +46,6 @@
   <section class="hero">
     <h1>ATTON RAON</h1>
     <p class="tagline">Short one-line description of the act / project goes here.</p>
-  </section>
-
-  <!-- VIDEO -->
-  <section id="video">
-    <h2>Video</h2>
-    <div class="video-frame">
-      <!-- Replace VIMEO_ID with your Vimeo video ID (the number in the video's URL) -->
-      <iframe
-        src="https://player.vimeo.com/video/VIMEO_ID"
-        title="Video"
-        loading="lazy"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-    </div>
   </section>
 
   <!-- ABOUT / TEXT -->

@@ -11,13 +11,54 @@ body {
   font-family: monospace;
   font-size: 18px;
   line-height: 1.4;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../assets/bg.jpg");
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
-  background-attachment: fixed, fixed;
+  background: #000;
+}
+
+/* Full-viewport background: photo shows first (fast, local), video fades
+   in on top once Vimeo's iframe has loaded. Fixed behind all content. */
+.bg-media {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #000;
+}
+
+.bg-image {
+  position: absolute;
+  inset: 0;
+  background: url("../assets/bg.jpg") center / cover no-repeat;
+}
+
+.bg-video-frame {
+  position: absolute;
+  inset: 0;
+}
+
+/* Sized so the video always covers the viewport without squashing —
+   same idea as background-size: cover, applied to an embedded 16:9 iframe. */
+.bg-video-frame iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw; /* 16:9 */
+  min-height: 100vh;
+  min-width: 177.78vh; /* 16:9 */
+  transform: translate(-50%, -50%);
+  border: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.bg-video-frame iframe.loaded {
+  opacity: 1;
+}
+
+.bg-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 main, header, footer {
@@ -72,21 +113,6 @@ section {
 
 h2 {
   font-size: 28px;
-}
-
-.video-frame {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000;
-}
-
-.video-frame iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
 }
 
 .shows-list,

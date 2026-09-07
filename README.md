@@ -51,9 +51,14 @@ site picks it up on next page load. No redeploy needed.
 
 All in [index.html](index.html):
 
-- **Video**: find `VIMEO_ID` in the `<iframe>` and replace it with your
-  Vimeo video ID (the number in the video's URL, e.g. `vimeo.com/123456789`
-  → `123456789`).
+- **Background video**: find `VIMEO_ID` near the top of the `<body>` (inside
+  `.bg-media`) and replace it with your Vimeo video ID (the number in the
+  video's URL, e.g. `vimeo.com/123456789` → `123456789`). It plays as the
+  full-page background — muted, looping, no controls (that's what Vimeo's
+  `?background=1` does) — cropped to fill the screen without ever squashing
+  it. The background photo (`assets/bg.jpg`) shows instantly and the video
+  fades in over it once Vimeo's player has loaded, so there's no blank gap
+  on a slow connection.
 - **Text**: hero tagline and the About paragraph are plain HTML — edit directly.
   - **Note**: the site title ("ATTON RAON") appears in three separate places, edit all three: 
     `<title>` in the `<head>`, `.logo` in the header, and `<h1>` in the hero.
@@ -85,7 +90,7 @@ All in [index.html](index.html):
 - No build tools, no npm dependencies, no framework — just HTML/CSS/JS. There's
   nothing to break or go out of date.
 - The video is embedded (Vimeo), not hosted here — keeps the page tiny and
-  avoids any bandwidth limits.
+  avoids any bandwidth limits, even used full-screen as a background.
 - Shows come from a live-fetched Google Sheet CSV rather than a CMS — your
   client edits a spreadsheet they already know how to use, and there's no
   login system, database, or admin panel to maintain.
