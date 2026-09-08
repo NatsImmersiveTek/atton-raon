@@ -4,7 +4,7 @@
 // log entry: which page, when, and the referrer/browser the visitor's own
 // browser reports about itself.
 (function () {
-  const ANALYTICS_URL = "PASTE_ANALYTICS_APPS_SCRIPT_URL_HERE";
+  const ANALYTICS_URL = "https://script.google.com/macros/s/AKfycbyunRPpjACew_immHbWw-AUMELsiU94l4F1eaTtptVElPwrAb-zKEFJiyY_EAeBBZPQ/exec";
   if (!ANALYTICS_URL || ANALYTICS_URL.indexOf("PASTE_") === 0) return;
 
   const data = new URLSearchParams({
