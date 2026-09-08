@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atton=Raon — Sign Up</title>
+<meta name="description" content="Get updates on new shows and releases.">
+
+<!-- ============================================================
+     QUICK-EDIT GUIDE:
+     1. Deploy the Apps Script backend first — see SIGNUP-SETUP.md —
+        then paste its Web App URL into the form's `action` attribute
+        below (search "PASTE_APPS_SCRIPT_URL_HERE").
+     2. Paste your WhatsApp Channel invite link where marked below
+        (search "PASTE_WHATSAPP_CHANNEL_LINK_HERE").
+     ============================================================ -->
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main>
+
+  <section class="hero" style="padding-top:60px; padding-bottom:20px;">
+    <h1 style="font-size:clamp(32px,8vw,64px); mix-blend-mode:normal;">SIGN UP</h1>
+    <p class="tagline">Get updates on new shows and releases.</p>
+  </section>
+
+  <section>
+    <!-- FORM: posts to a hidden iframe so the page never navigates away,
+         and works cross-origin against Apps Script without fighting CORS.
+         See SIGNUP-SETUP.md for the backend this submits to. -->
+    <form
+      id="signup-form"
+      action="PASTE_APPS_SCRIPT_URL_HERE"
+      method="POST"
+      target="signup-frame">
+
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="For WhatsApp updates">
+      </div>
+
+      <!-- Honeypot: hidden from real visitors via CSS, bots that fill in
+           every field tend to fill this too — if it's non-empty, the
+           backend silently drops the submission. -->
+      <div class="field field-honeypot" aria-hidden="true">
+        <label for="company">Leave blank</label>
+        <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" class="btn-submit">Sign Up</button>
+    </form>
+
+    <div id="signup-success" class="signup-success" hidden>
+      <p><strong>Thanks — you're on the list.</strong></p>
+      <p>Want gig updates the moment they're posted?</p>
+      <a href="PASTE_WHATSAPP_CHANNEL_LINK_HERE" target="_blank" rel="noopener" class="btn-submit">
+        Join our WhatsApp Channel
+      </a>
+    </div>
+
+    <iframe name="signup-frame" id="signup-frame" hidden></iframe>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; <span id="year"></span> Atton=Raon.</p>
+</footer>
+
+<script src="js/signup.js"></script>
+</body>
+</html>
