@@ -10,6 +10,10 @@ const SHEET_CSV_URL =
 
 // Set to true to keep showing past-dated shows instead of hiding them.
 const SHOW_PAST_SHOWS = false;
+
+// How often to re-check the sheet for updates, in minutes, without needing
+// a manual page refresh. Set to 0 to disable and only load once.
+const SHOWS_REFRESH_MINUTES = 5;
 // ============================================================
 
 document.getElementById("year").textContent = new Date().getFullYear();
@@ -105,9 +109,10 @@ if (!SHEET_CSV_URL) {
   setStatus("Shows aren't hooked up yet — add your Google Sheet URL in js/main.js.");
 } else {
   loadShows(SHEET_CSV_URL);
+  startShowsAutoRefresh();
 }
 
-async function loadShows(url) {
+async function loadShows(url, { silent = false } = {}) {
   try {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error("Sheet request failed: " + res.status);
@@ -116,8 +121,33 @@ async function loadShows(url) {
     renderShows(rows);
   } catch (err) {
     console.error(err);
-    setStatus("Couldn't load shows right now. Check back soon.");
+    // On a background refresh, a one-off network hiccup shouldn't wipe out
+    // the shows list that's already on screen — just leave it as-is and
+    // try again next interval. Only the very first load shows an error.
+    if (!silent) setStatus("Couldn't load shows right now. Check back soon.");
   }
+}
+
+// Re-checks the sheet periodically so a client's edits show up without
+// visitors needing to manually refresh the page. To avoid hammering
+// Google's servers (or anyone's data plan) for no reason, this only polls
+// while the tab is actually visible — a backgrounded/minimized tab does
+// nothing — and re-checks immediately when the tab becomes visible again
+// rather than waiting for the next interval.
+function startShowsAutoRefresh() {
+  if (!SHOWS_REFRESH_MINUTES) return;
+
+  setInterval(() => {
+    if (document.visibilityState === "visible") {
+      loadShows(SHEET_CSV_URL, { silent: true });
+    }
+  }, SHOWS_REFRESH_MINUTES * 60 * 1000);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      loadShows(SHEET_CSV_URL, { silent: true });
+    }
+  });
 }
 
 function setStatus(message) {

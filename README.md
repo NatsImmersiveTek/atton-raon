@@ -49,7 +49,13 @@ js/main.js      fetches the Google Sheet and renders the shows list
    tab's gid (visible in the tab's URL when you click on it in Google Sheets).
 
 That's it — from now on, your client just edits rows in the Sheet and the
-site picks it up on next page load. No redeploy needed.
+site picks it up automatically — no redeploy, and no manual page refresh
+needed either. It re-checks the sheet every 5 minutes on its own (only
+while the tab is actually open and visible, so a background/minimized tab
+doesn't keep making requests for no reason — and it checks again right
+away whenever you switch back to the tab). Adjust `SHOWS_REFRESH_MINUTES`
+near the top of [js/main.js](js/main.js) if you want that faster/slower,
+or set it to `0` to turn auto-refresh off entirely.
 
 > Anyone with the link can read the sheet's contents (read-only, and only
 > the columns you put in it). Don't put anything sensitive in it.
