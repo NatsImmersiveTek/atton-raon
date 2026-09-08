@@ -1,5 +1,7 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
+const WHATSAPP_CHANNEL_URL = "https://whatsapp.com/channel/0029VbCslkM59PwOjbLXBp17";
+
 const form = document.getElementById("signup-form");
 const successEl = document.getElementById("signup-success");
 const frame = document.getElementById("signup-frame");
@@ -31,6 +33,19 @@ form.addEventListener("submit", (e) => {
   }
   if (formError) formError.hidden = true;
 
+  // Open the WhatsApp Channel in a new tab right here, synchronously,
+  // inside the same click that triggered this handler — that's what keeps
+  // it from being blocked as a popup. Doing this later (e.g. once the
+  // hidden iframe finishes loading) is too far removed from the original
+  // user gesture and browsers won't reliably allow it, which is exactly
+  // why the previous "tap this link after submitting" version kept
+  // getting beaten by the auto-redirect. This way it just always opens,
+  // no race.
+  const joinWhatsapp = document.getElementById("join-whatsapp");
+  if (joinWhatsapp && joinWhatsapp.checked) {
+    window.open(WHATSAPP_CHANNEL_URL, "_blank", "noopener");
+  }
+
   // The form posts to a hidden iframe (target="signup-frame") so the page
   // never navigates away and this works cross-origin against Apps Script
   // without needing CORS response headers, which Apps Script Web Apps
@@ -39,15 +54,9 @@ form.addEventListener("submit", (e) => {
   submitted = true;
 });
 
-const REDIRECT_DELAY_MS = 4000;
-const MAIN_SITE_URL = "index.html";
-
 frame.addEventListener("load", () => {
   if (!submitted) return; // ignore the iframe's initial blank load
   submitted = false;
   form.hidden = true;
   successEl.hidden = false;
-  setTimeout(() => {
-    window.location.href = MAIN_SITE_URL;
-  }, REDIRECT_DELAY_MS);
 });

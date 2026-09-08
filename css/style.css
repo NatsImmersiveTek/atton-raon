@@ -265,6 +265,23 @@ footer {
   margin: -8px 0 20px;
 }
 
+.field-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: none;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.field-checkbox input {
+  width: 22px;
+  height: 22px;
+  accent-color: #fff;
+  cursor: pointer;
+}
+
 .field-honeypot {
   position: absolute;
   left: -9999px;
