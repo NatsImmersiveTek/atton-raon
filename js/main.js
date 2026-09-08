@@ -14,6 +14,39 @@ const SHOW_PAST_SHOWS = false;
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// Hero title: scale it to exactly fill the screen width, on any device.
+// Monospace fonts render at slightly different widths per character across
+// browsers/OS, so a fixed vw-based font-size can't hit "fills the width"
+// precisely. Measuring via a <canvas> gives the text's true natural width
+// at a given size, independent of the h1's own (deliberately full-width)
+// CSS layout — measuring the element itself would just read back the box
+// width we already set, not the text's intrinsic size.
+let fitCanvas;
+function fitHeroTitle() {
+  const el = document.querySelector(".hero h1");
+  if (!el) return;
+  const sidePadding = 40; // matches the h1's own left/right padding
+  const target = window.innerWidth - sidePadding;
+
+  fitCanvas = fitCanvas || document.createElement("canvas");
+  const ctx = fitCanvas.getContext("2d");
+  const style = getComputedStyle(el);
+  const baseSize = 100;
+  ctx.font = `${style.fontWeight} ${baseSize}px ${style.fontFamily}`;
+  const textWidth = ctx.measureText(el.textContent).width;
+  if (!textWidth) return;
+
+  const fitted = Math.max(28, (baseSize * target) / textWidth);
+  el.style.fontSize = fitted + "px";
+}
+fitHeroTitle();
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(fitHeroTitle, 100);
+});
+
 // Background video: fade it in after a fixed delay. Neither the iframe's
 // own "load" event nor YouTube's onStateChange=PLAYING line up with when a
 // frame is actually visibly painted — both fire while the player is still
