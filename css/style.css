@@ -308,6 +308,13 @@ footer {
   color: #000;
 }
 
+.privacy-note {
+  margin-top: 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+}
+
 .signup-success {
   padding: 20px 0;
 }
