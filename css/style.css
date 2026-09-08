@@ -259,6 +259,12 @@ footer {
   outline-offset: 2px;
 }
 
+.form-error {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin: -8px 0 20px;
+}
+
 .field-honeypot {
   position: absolute;
   left: -9999px;
@@ -292,4 +298,10 @@ footer {
 .signup-success .btn-submit {
   margin-top: 12px;
   text-decoration: none;
+}
+
+.redirect-note {
+  margin-top: 20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
 }

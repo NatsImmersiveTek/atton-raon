@@ -12,7 +12,6 @@ const NOTIFY_EMAIL = "raonproductions@gmail.com";
 function doPost(e) {
   try {
     const params = (e && e.parameter) || {};
-    const name = (params.name || "").trim();
     const email = (params.email || "").trim();
     const phone = (params.phone || "").trim();
     const honeypot = (params.company || "").trim();
@@ -24,19 +23,20 @@ function doPost(e) {
       return respond({ ok: true });
     }
 
-    if (!email) {
-      return respond({ ok: false, error: "Email is required." });
+    // Neither field is required on its own, but a submission with both
+    // left blank isn't useful to anyone — reject that case only.
+    if (!email && !phone) {
+      return respond({ ok: false, error: "Enter an email or phone number." });
     }
 
     const sheet = getOrCreateSheet();
-    sheet.appendRow([new Date(), name, email, phone]);
+    sheet.appendRow([new Date(), email, phone]);
 
     MailApp.sendEmail({
       to: NOTIFY_EMAIL,
-      subject: "New signup: " + (name || email),
+      subject: "New signup: " + (email || phone),
       body:
-        "Name: " + (name || "(not given)") + "\n" +
-        "Email: " + email + "\n" +
+        "Email: " + (email || "(not given)") + "\n" +
         "Phone: " + (phone || "(not given)") + "\n" +
         "Submitted: " + new Date().toString(),
     });
@@ -52,7 +52,7 @@ function getOrCreateSheet() {
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(["Timestamp", "Name", "Email", "Phone"]);
+    sheet.appendRow(["Timestamp", "Email", "Phone"]);
   }
   return sheet;
 }
