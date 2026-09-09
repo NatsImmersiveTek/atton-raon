@@ -51,6 +51,69 @@ window.addEventListener("resize", () => {
   resizeTimer = setTimeout(fitHeroTitle, 100);
 });
 
+// Hero title "video window" effect: each letter shows exactly the patch
+// of the background video that's directly behind it — like a stencil cut
+// into the video, rather than a flat color effect. CSS can clip a *static*
+// image to text (background-clip: text, set up in style.css), but not a
+// live playing <video>, so this keeps redrawing a canvas snapshot of the
+// video, cropped to line up with the title's actual on-screen position —
+// matching the same object-fit: cover math the video itself uses, so it
+// reads as a continuation of the real background, not a separate copy.
+function initTitleVideoWindow() {
+  const h1 = document.querySelector(".hero h1");
+  const video = document.getElementById("bg-video");
+  if (!h1 || !video) return;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  let lastUrl = null;
+  let frame = 0;
+
+  function draw() {
+    requestAnimationFrame(draw);
+    frame++;
+    if (frame % 4 !== 0) return; // ~15fps at a 60fps refresh is plenty smooth here
+    if (video.readyState < 2 || !video.videoWidth) return;
+
+    // Same cover-fit math the video itself is rendered with (object-fit:
+    // cover over the full viewport) — needed to find which part of the
+    // source video sits behind the title on screen right now.
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const scale = Math.max(vw / video.videoWidth, vh / video.videoHeight);
+    const offsetX = (vw - video.videoWidth * scale) / 2;
+    const offsetY = (vh - video.videoHeight * scale) / 2;
+
+    const rect = h1.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const srcX = (rect.left - offsetX) / scale;
+    const srcY = (rect.top - offsetY) / scale;
+    const srcW = rect.width / scale;
+    const srcH = rect.height / scale;
+
+    const outW = Math.max(1, Math.round(rect.width));
+    const outH = Math.max(1, Math.round(rect.height));
+    if (canvas.width !== outW) canvas.width = outW;
+    if (canvas.height !== outH) canvas.height = outH;
+
+    ctx.drawImage(video, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
+
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        h1.style.backgroundImage = `url(${url})`;
+        if (lastUrl) URL.revokeObjectURL(lastUrl);
+        lastUrl = url;
+      },
+      "image/jpeg",
+      0.85
+    );
+  }
+  requestAnimationFrame(draw);
+}
+initTitleVideoWindow();
+
 // Background video: fade it in once a real frame is actually available.
 // Self-hosted <video> gives a genuinely reliable signal for this (unlike
 // the old cross-origin YouTube embed, where neither the iframe's "load"
