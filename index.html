@@ -10,8 +10,10 @@
      QUICK-EDIT GUIDE (no coding needed beyond this):
      1. Replace "Atton=Raon" in the <title> and the hero <h1> with your
         act's name.
-     2. Swap the YouTube video ID below for your video (search "bg-video" in
-        this file) — this is the full-page background, not a section.
+     2. Swap the background video by replacing assets/bg-video.mp4 with
+        your own file (search "bg-video" in this file) — this is the
+        full-page background, not a section. Keep it reasonably
+        compressed (a few MB, not tens) so the page still loads fast.
      3. Fill in the tagline, About text, and the Vimeo / Bandcamp links.
      4. Upcoming shows are NOT edited here — see README.md, they come
         live from a Google Sheet your client can edit directly.
@@ -22,18 +24,20 @@
 <body>
 
 <!-- BACKGROUND: plain black until the video loads and fades in on top.
-     Purely decorative, hidden from screen readers. -->
+     Purely decorative, hidden from screen readers. Self-hosted (not an
+     embed), so this is a plain <video> — much simpler than the old
+     cross-origin iframe approach: no external API, no CORS/timing
+     workarounds needed, native browser events are reliable here. -->
 <div class="bg-media" aria-hidden="true">
-  <div class="bg-video-frame">
-    <!-- Placeholder video — replace PfXd4pUWgOE with your own YouTube video
-         ID (the part after youtu.be/ or v= in the video's URL) when ready. -->
-    <iframe
-      id="bg-video"
-      src="https://www.youtube.com/embed/PfXd4pUWgOE?autoplay=1&mute=1&loop=1&playlist=PfXd4pUWgOE&controls=0&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&disablekb=1&fs=0&enablejsapi=1"
-      title=""
-      allow="autoplay; encrypted-media; picture-in-picture">
-    </iframe>
-  </div>
+  <video
+    id="bg-video"
+    src="assets/bg-video.mp4"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto">
+  </video>
   <div class="bg-scrim"></div>
 </div>
 
@@ -85,7 +89,6 @@
   <p class="analytics-note">This site logs anonymous page visits (no cookies, no personal data) to understand traffic.</p>
 </footer>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script src="js/main.js"></script>
 <script src="js/analytics.js"></script>
 </body>

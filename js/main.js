@@ -51,56 +51,36 @@ window.addEventListener("resize", () => {
   resizeTimer = setTimeout(fitHeroTitle, 100);
 });
 
-// Background video: fade it in after a fixed delay. Neither the iframe's
-// own "load" event nor YouTube's onStateChange=PLAYING line up with when a
-// frame is actually visibly painted — both fire while the player is still
-// internally black/buffering, which was revealing the video (and running
-// the title's color-invert blend) a few seconds before there was real
-// color behind it. A flat delay sidesteps that mismatch entirely: the
-// background just stays solid black, then cuts over once, fully formed.
+// Background video: fade it in once a real frame is actually available.
+// Self-hosted <video> gives a genuinely reliable signal for this (unlike
+// the old cross-origin YouTube embed, where neither the iframe's "load"
+// event nor its postMessage-based state events lined up with when a frame
+// was actually visibly painted) — "loadeddata" fires exactly when the
+// first frame is decoded and ready to show.
 const bgVideo = document.getElementById("bg-video");
 if (bgVideo) {
-  setTimeout(() => bgVideo.classList.add("loaded"), 3200);
+  bgVideo.addEventListener("loadeddata", () => bgVideo.classList.add("loaded"));
+  // Fallback in case that event is somehow missed (e.g. video already
+  // cached and ready before the listener attaches).
+  if (bgVideo.readyState >= 2) bgVideo.classList.add("loaded");
 }
 
 // Sound toggle: the video autoplays muted (required by every browser), this
-// button lets a visitor turn it on — needs the YouTube IFrame Player API
-// (loaded via <script src="https://www.youtube.com/iframe_api"> in
-// index.html) to control the embed after the fact. That script loads
-// asynchronously and calls window.onYouTubeIframeAPIReady once it's ready.
+// button lets a visitor turn it on. Self-hosted video needs none of the
+// external-API machinery the old YouTube embed did — it's just a property
+// on the element itself.
 const muteBtn = document.getElementById("mute-toggle");
 if (muteBtn && bgVideo) {
-  window.onYouTubeIframeAPIReady = () => {
-    new YT.Player(bgVideo, {
-      events: {
-        onReady: (event) => {
-          const player = event.target;
-          let muted = true;
-
-          muteBtn.addEventListener("click", () => {
-            muted = !muted;
-            if (muted) {
-              player.mute();
-            } else {
-              player.unMute();
-            }
-            muteBtn.classList.toggle("is-muted", muted);
-            muteBtn.setAttribute("aria-pressed", String(muted));
-            muteBtn.setAttribute(
-              "aria-label",
-              muted ? "Unmute background video" : "Mute background video"
-            );
-          });
-        },
-      },
-    });
-  };
-
-  // If the API script fails to load at all (e.g. offline), don't leave a
-  // dead button on screen.
-  setTimeout(() => {
-    if (!window.YT) muteBtn.hidden = true;
-  }, 5000);
+  muteBtn.addEventListener("click", () => {
+    bgVideo.muted = !bgVideo.muted;
+    const muted = bgVideo.muted;
+    muteBtn.classList.toggle("is-muted", muted);
+    muteBtn.setAttribute("aria-pressed", String(muted));
+    muteBtn.setAttribute(
+      "aria-label",
+      muted ? "Unmute background video" : "Mute background video"
+    );
+  });
 }
 
 const listEl = document.getElementById("shows-list");

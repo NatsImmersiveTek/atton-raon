@@ -1,4 +1,5 @@
-# Original full-resolution source photos — only the compressed
+# Original full-resolution source photos/videos — only the compressed
 # versions in assets/ are meant to ship on the site.
 DSC*.JPG
 DSC*.jpg
+assets/10 seconds for website*.mp4

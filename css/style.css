@@ -14,8 +14,8 @@ body {
   background: #000;
 }
 
-/* Full-viewport background: plain black until Vimeo's iframe has loaded,
-   then the video fades in. Fixed behind all content. */
+/* Full-viewport background: plain black until the video has a real frame
+   ready, then it fades in. Fixed behind all content. */
 .bg-media {
   position: fixed;
   inset: 0;
@@ -24,28 +24,21 @@ body {
   background: #000;
 }
 
-.bg-video-frame {
+/* object-fit: cover does what used to take a whole min-width/min-height
+   vh/vw formula for an embedded iframe — fills the viewport without ever
+   squashing, cropping overflow instead. Self-hosted video gets this for
+   free. */
+#bg-video {
   position: absolute;
   inset: 0;
-}
-
-/* Sized so the video always covers the viewport without squashing —
-   same idea as background-size: cover, applied to an embedded 16:9 iframe. */
-.bg-video-frame iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100vw;
-  height: 56.25vw; /* 16:9 */
-  min-height: 100vh;
-  min-width: 177.78vh; /* 16:9 */
-  transform: translate(-50%, -50%);
-  border: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   opacity: 0;
   transition: opacity 0.8s ease;
 }
 
-.bg-video-frame iframe.loaded {
+#bg-video.loaded {
   opacity: 1;
 }
 
