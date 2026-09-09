@@ -18,19 +18,21 @@ const SHOWS_REFRESH_MINUTES = 5;
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Hero title: scale it to exactly fill the screen width, on any device.
-// Monospace fonts render at slightly different widths per character across
-// browsers/OS, so a fixed vw-based font-size can't hit "fills the width"
-// precisely. Measuring via a <canvas> gives the text's true natural width
-// at a given size, independent of the h1's own (deliberately full-width)
-// CSS layout — measuring the element itself would just read back the box
-// width we already set, not the text's intrinsic size.
+// Hero title: scale it to exactly fill the normal content width (same
+// 720px max-width the rest of the page's text uses — see main's CSS),
+// not the full viewport. Monospace fonts render at slightly different
+// widths per character across browsers/OS, so a fixed vw-based font-size
+// can't hit "fills the width" precisely. Measuring via a <canvas> gives
+// the text's true natural width at a given size, independent of the h1's
+// own CSS layout — measuring the element itself would just read back
+// whatever width we already gave it, not the text's intrinsic size.
 let fitCanvas;
 function fitHeroTitle() {
   const el = document.querySelector(".hero h1");
   if (!el) return;
-  const sidePadding = 40; // matches the h1's own left/right padding
-  const target = window.innerWidth - sidePadding;
+  const contentMaxWidth = 720; // matches main's max-width in style.css
+  const sidePadding = 40; // matches main's own left/right padding
+  const target = Math.min(window.innerWidth, contentMaxWidth) - sidePadding;
 
   fitCanvas = fitCanvas || document.createElement("canvas");
   const ctx = fitCanvas.getContext("2d");

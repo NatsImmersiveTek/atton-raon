@@ -110,19 +110,16 @@ h1, h2 {
 }
 
 .hero h1 {
-  /* Break out of main's 720px column to span the full viewport width —
-     the title should run edge to edge regardless of screen size. */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  padding: 0 20px;
-  box-sizing: border-box;
+  /* Stays within main's normal 720px content column — sized (via JS,
+     fitHeroTitle) to fill exactly that width, same max-width as the
+     rest of the page's text, not the full viewport. */
   white-space: nowrap;
 
   /* Fallback size if JS (js/main.js, fitHeroTitle) doesn't run — JS
      measures the real rendered text and overrides this with an exact
-     px value so it always fills the width precisely, on any screen. */
-  font-size: clamp(40px, 16vw, 220px);
+     px value so it always fills the content width precisely, on any
+     screen. */
+  font-size: clamp(32px, 9vw, 100px);
   line-height: 1;
   margin-top: 0;
   margin-bottom: 20px;
@@ -138,6 +135,17 @@ h1, h2 {
   background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
+}
+
+.contact-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 28px;
+  border: 1px solid #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 16px;
+  letter-spacing: 0.05em;
 }
 
 .tagline {
