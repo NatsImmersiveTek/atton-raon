@@ -53,85 +53,11 @@ window.addEventListener("resize", () => {
   resizeTimer = setTimeout(fitHeroTitle, 100);
 });
 
-// Hero title "video window" effect: each letter shows exactly the patch
-// of the background video that's directly behind it — like a stencil cut
-// into the video, rather than a flat color effect. Done with a single
-// persistent <canvas> repainted every frame, using destination-in
-// compositing (draw the text shape, then draw the video — the video only
-// "sticks" to pixels the text shape already covers). Repainting one
-// canvas in place is smooth by nature; an earlier version instead swapped
-// the h1's CSS background-image to a brand-new resource every frame,
-// which visibly flickered — each swap forces the browser to decode a
-// fresh image, with a gap while it does. A canvas has no such gap.
-function initTitleVideoWindow() {
-  const h1 = document.querySelector(".hero h1");
-  const video = document.getElementById("bg-video");
-  if (!h1 || !video) return;
-
-  const canvas = document.createElement("canvas");
-  canvas.id = "title-video-canvas";
-  canvas.setAttribute("aria-hidden", "true");
-  document.body.appendChild(canvas);
-  const ctx = canvas.getContext("2d");
-
-  function draw() {
-    requestAnimationFrame(draw);
-    if (video.readyState < 2 || !video.videoWidth) return;
-
-    const rect = h1.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-
-    const outW = Math.max(1, Math.round(rect.width));
-    const outH = Math.max(1, Math.round(rect.height));
-    if (canvas.width !== outW) canvas.width = outW;
-    if (canvas.height !== outH) canvas.height = outH;
-    canvas.style.left = rect.left + "px";
-    canvas.style.top = rect.top + "px";
-    canvas.style.width = outW + "px";
-    canvas.style.height = outH + "px";
-
-    ctx.clearRect(0, 0, outW, outH);
-
-    // 1. Draw the title text itself as the "stencil" shape. Same canvas
-    // text-measuring API fitHeroTitle already uses, so the font metrics
-    // are guaranteed consistent between the two.
-    const style = getComputedStyle(h1);
-    ctx.fillStyle = "#fff";
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
-    ctx.font = `${style.fontWeight} ${parseFloat(style.fontSize)}px ${style.fontFamily}`;
-    ctx.fillText(h1.textContent, outW / 2, outH / 2);
-
-    // 2. From here, the video (source) only paints where the text shape
-    // (destination) above already has coverage — and crucially, source-in
-    // keeps the *source's* color (the video), whereas destination-in would
-    // keep the *destination's* color (the plain white text) and just use
-    // the video's shape as a mask, discarding its actual colors — which
-    // is why an earlier version of this appeared frozen: it was always
-    // rendering the same solid white text, never the video underneath.
-    ctx.globalCompositeOperation = "source-in";
-
-    // 3. Same cover-fit math the background video itself is rendered
-    // with (object-fit: cover over the full viewport) — finds which part
-    // of the source video sits directly behind the title right now, so
-    // this reads as a continuation of the real background, not a
-    // separate copy.
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const scale = Math.max(vw / video.videoWidth, vh / video.videoHeight);
-    const offsetX = (vw - video.videoWidth * scale) / 2;
-    const offsetY = (vh - video.videoHeight * scale) / 2;
-    const srcX = (rect.left - offsetX) / scale;
-    const srcY = (rect.top - offsetY) / scale;
-    const srcW = rect.width / scale;
-    const srcH = rect.height / scale;
-    ctx.drawImage(video, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
-
-    ctx.globalCompositeOperation = "source-over"; // reset for next frame's text draw
-  }
-  requestAnimationFrame(draw);
-}
-initTitleVideoWindow();
+// (Previously had a "video window" effect here — each letter showing the
+// video through its shape, via a continuously-repainted <canvas>. Pulled
+// it out: it was too heavy for mobile GPUs/decoders to keep up with
+// alongside the background video itself, and broke on phones. Title is
+// plain text again for now — see style.css for the styling.)
 
 // Background video: fade it in once a real frame is actually available.
 // Self-hosted <video> gives a genuinely reliable signal for this (unlike
@@ -145,6 +71,24 @@ if (bgVideo) {
   // Fallback in case that event is somehow missed (e.g. video already
   // cached and ready before the listener attaches).
   if (bgVideo.readyState >= 2) bgVideo.classList.add("loaded");
+
+  // Some mobile browsers don't reliably honor the plain "autoplay" HTML
+  // attribute by itself (even with muted + playsinline, which is
+  // supposed to be enough) — showing a paused/"tap to play" state
+  // instead. Calling .play() explicitly is more reliable in practice. If
+  // it's still blocked, resume on the visitor's very first tap/click
+  // anywhere on the page, which every browser always allows.
+  const tryPlay = () => {
+    const p = bgVideo.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(() => {
+        const resume = () => bgVideo.play().catch(() => {});
+        document.addEventListener("touchstart", resume, { once: true, passive: true });
+        document.addEventListener("click", resume, { once: true });
+      });
+    }
+  };
+  tryPlay();
 }
 
 // Sound toggle: the video autoplays muted (required by every browser), this

@@ -123,20 +123,11 @@ h1, h2 {
   line-height: 1;
   margin-top: 0;
   margin-bottom: 20px;
-  /* Actual text stays invisible but present (for accessibility/SEO) — the
-     video-through-letters effect is a separate <canvas> drawn on top by
-     js/main.js (initTitleVideoWindow), positioned to match this element
-     exactly. Done via canvas compositing rather than CSS background-clip
-     because repainting a canvas in place is smooth; swapping
-     background-image to a new resource every frame caused visible
-     flicker (each swap needs a fresh decode, with a gap while it does). */
-  color: transparent;
-}
-
-#title-video-canvas {
-  position: fixed;
-  pointer-events: none;
-  z-index: 1;
+  /* Plain white text — kept simple deliberately. A video-through-letters
+     canvas effect used to live here but was too heavy for mobile
+     GPUs/decoders to keep up with alongside the background video, and
+     broke on phones. */
+  color: #fff;
 }
 
 .contact-btn {
