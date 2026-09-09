@@ -55,62 +55,79 @@ window.addEventListener("resize", () => {
 
 // Hero title "video window" effect: each letter shows exactly the patch
 // of the background video that's directly behind it — like a stencil cut
-// into the video, rather than a flat color effect. CSS can clip a *static*
-// image to text (background-clip: text, set up in style.css), but not a
-// live playing <video>, so this keeps redrawing a canvas snapshot of the
-// video, cropped to line up with the title's actual on-screen position —
-// matching the same object-fit: cover math the video itself uses, so it
-// reads as a continuation of the real background, not a separate copy.
+// into the video, rather than a flat color effect. Done with a single
+// persistent <canvas> repainted every frame, using destination-in
+// compositing (draw the text shape, then draw the video — the video only
+// "sticks" to pixels the text shape already covers). Repainting one
+// canvas in place is smooth by nature; an earlier version instead swapped
+// the h1's CSS background-image to a brand-new resource every frame,
+// which visibly flickered — each swap forces the browser to decode a
+// fresh image, with a gap while it does. A canvas has no such gap.
 function initTitleVideoWindow() {
   const h1 = document.querySelector(".hero h1");
   const video = document.getElementById("bg-video");
   if (!h1 || !video) return;
 
   const canvas = document.createElement("canvas");
+  canvas.id = "title-video-canvas";
+  canvas.setAttribute("aria-hidden", "true");
+  document.body.appendChild(canvas);
   const ctx = canvas.getContext("2d");
-  let lastUrl = null;
-  let frame = 0;
 
   function draw() {
     requestAnimationFrame(draw);
-    frame++;
-    if (frame % 4 !== 0) return; // ~15fps at a 60fps refresh is plenty smooth here
     if (video.readyState < 2 || !video.videoWidth) return;
-
-    // Same cover-fit math the video itself is rendered with (object-fit:
-    // cover over the full viewport) — needed to find which part of the
-    // source video sits behind the title on screen right now.
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const scale = Math.max(vw / video.videoWidth, vh / video.videoHeight);
-    const offsetX = (vw - video.videoWidth * scale) / 2;
-    const offsetY = (vh - video.videoHeight * scale) / 2;
 
     const rect = h1.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
-    const srcX = (rect.left - offsetX) / scale;
-    const srcY = (rect.top - offsetY) / scale;
-    const srcW = rect.width / scale;
-    const srcH = rect.height / scale;
 
     const outW = Math.max(1, Math.round(rect.width));
     const outH = Math.max(1, Math.round(rect.height));
     if (canvas.width !== outW) canvas.width = outW;
     if (canvas.height !== outH) canvas.height = outH;
+    canvas.style.left = rect.left + "px";
+    canvas.style.top = rect.top + "px";
+    canvas.style.width = outW + "px";
+    canvas.style.height = outH + "px";
 
+    ctx.clearRect(0, 0, outW, outH);
+
+    // 1. Draw the title text itself as the "stencil" shape. Same canvas
+    // text-measuring API fitHeroTitle already uses, so the font metrics
+    // are guaranteed consistent between the two.
+    const style = getComputedStyle(h1);
+    ctx.fillStyle = "#fff";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+    ctx.font = `${style.fontWeight} ${parseFloat(style.fontSize)}px ${style.fontFamily}`;
+    ctx.fillText(h1.textContent, outW / 2, outH / 2);
+
+    // 2. From here, the video (source) only paints where the text shape
+    // (destination) above already has coverage — and crucially, source-in
+    // keeps the *source's* color (the video), whereas destination-in would
+    // keep the *destination's* color (the plain white text) and just use
+    // the video's shape as a mask, discarding its actual colors — which
+    // is why an earlier version of this appeared frozen: it was always
+    // rendering the same solid white text, never the video underneath.
+    ctx.globalCompositeOperation = "source-in";
+
+    // 3. Same cover-fit math the background video itself is rendered
+    // with (object-fit: cover over the full viewport) — finds which part
+    // of the source video sits directly behind the title right now, so
+    // this reads as a continuation of the real background, not a
+    // separate copy.
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const scale = Math.max(vw / video.videoWidth, vh / video.videoHeight);
+    const offsetX = (vw - video.videoWidth * scale) / 2;
+    const offsetY = (vh - video.videoHeight * scale) / 2;
+    const srcX = (rect.left - offsetX) / scale;
+    const srcY = (rect.top - offsetY) / scale;
+    const srcW = rect.width / scale;
+    const srcH = rect.height / scale;
     ctx.drawImage(video, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
 
-    canvas.toBlob(
-      (blob) => {
-        if (!blob) return;
-        const url = URL.createObjectURL(blob);
-        h1.style.backgroundImage = `url(${url})`;
-        if (lastUrl) URL.revokeObjectURL(lastUrl);
-        lastUrl = url;
-      },
-      "image/jpeg",
-      0.85
-    );
+    ctx.globalCompositeOperation = "source-over"; // reset for next frame's text draw
   }
   requestAnimationFrame(draw);
 }

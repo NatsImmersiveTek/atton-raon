@@ -123,18 +123,20 @@ h1, h2 {
   line-height: 1;
   margin-top: 0;
   margin-bottom: 20px;
-  /* The video shows through only the letter shapes themselves (each
-     letter is its own window — gaps and counters, like inside an "O",
-     stay black) via background-clip: text. The actual "background" is a
-     live canvas snapshot kept in sync by js/main.js (initTitleVideoMask)
-     — CSS alone can't clip a playing <video> to text, only a static
-     image, so JS continuously redraws one. */
+  /* Actual text stays invisible but present (for accessibility/SEO) — the
+     video-through-letters effect is a separate <canvas> drawn on top by
+     js/main.js (initTitleVideoWindow), positioned to match this element
+     exactly. Done via canvas compositing rather than CSS background-clip
+     because repainting a canvas in place is smooth; swapping
+     background-image to a new resource every frame caused visible
+     flicker (each swap needs a fresh decode, with a gap while it does). */
   color: transparent;
-  -webkit-text-fill-color: transparent;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
+}
+
+#title-video-canvas {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .contact-btn {
