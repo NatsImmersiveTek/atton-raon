@@ -132,13 +132,20 @@ h1, h2 {
 
 .contact-btn {
   display: inline-block;
-  margin-top: 10px;
   padding: 10px 28px;
   border: 1px solid #fff;
   text-decoration: none;
   text-transform: uppercase;
   font-size: 16px;
   letter-spacing: 0.05em;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
 }
 
 .tagline {
@@ -152,10 +159,6 @@ h1, h2 {
 
 .quote-under-hero {
   padding-top: 0;
-}
-
-.quote .contact-btn {
-  margin-top: 28px;
 }
 
 .quote blockquote {
