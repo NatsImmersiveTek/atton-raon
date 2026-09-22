@@ -56,31 +56,33 @@
       beauty.”</p>
       <cite>— Clash Magazine</cite>
     </blockquote>
+    <!-- One row: Bandcamp, Connect, then both mute toggles (ambience +
+         trailer) grouped at the end — icon-only, no visible labels
+         (aria-label still carries the accessible name for screen
+         readers). -->
     <div class="btn-row">
+      <a href="https://attonraonmusic.bandcamp.com/album/truth-sensation-ep" target="_blank" rel="noopener" class="contact-btn">Bandcamp</a>
       <a href="signup.html" class="contact-btn">Connect</a>
+      <div class="mute-toggles">
+        <button id="mute-toggle" class="mute-toggle is-muted" type="button" aria-pressed="true" aria-label="Unmute background ambience">
+          <svg class="icon icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
+          <svg class="icon icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+        </button>
+        <button id="trailer-mute-toggle" class="mute-toggle is-muted" type="button" aria-pressed="true" aria-label="Unmute trailer video">
+          <svg class="icon icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
+          <svg class="icon icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+        </button>
+      </div>
     </div>
   </section>
 
   <!-- TRAILER: separate file from the background video (assets/trailer.mp4,
-       not assets/bg-video.mp4). Now a second ambient layer, same pattern
-       as the background — autoplaying, looping, muted by default — with
-       its own mute button below instead of native play controls. -->
+       not assets/bg-video.mp4). A second ambient layer, same pattern as
+       the background — autoplaying, looping, muted by default, sound
+       controlled by the mute buttons above rather than native controls. -->
   <section id="trailer">
     <div class="video-embed">
       <video id="trailer-video" autoplay muted loop playsinline preload="auto" src="assets/trailer.mp4"></video>
-    </div>
-    <!-- Both mute buttons (ambience + trailer) live here, right-aligned
-         under the embed — icon-only, no visible labels (aria-label still
-         carries the accessible name for screen readers). -->
-    <div class="mute-toggles">
-      <button id="mute-toggle" class="mute-toggle is-muted" type="button" aria-pressed="true" aria-label="Unmute background ambience">
-        <svg class="icon icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
-        <svg class="icon icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
-      </button>
-      <button id="trailer-mute-toggle" class="mute-toggle is-muted" type="button" aria-pressed="true" aria-label="Unmute trailer video">
-        <svg class="icon icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
-        <svg class="icon icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
-      </button>
     </div>
   </section>
 
@@ -90,13 +92,6 @@
     <ul id="shows-list" class="shows-list">
       <li class="shows-status">Loading shows…</li>
     </ul>
-  </section>
-
-  <!-- BANDCAMP -->
-  <section id="links">
-    <div class="btn-row">
-      <a href="https://attonraonmusic.bandcamp.com/album/truth-sensation-ep" target="_blank" rel="noopener" class="contact-btn">Bandcamp</a>
-    </div>
   </section>
 
 </main>

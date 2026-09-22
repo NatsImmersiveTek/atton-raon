@@ -52,14 +52,12 @@ body {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* Both mute buttons (ambience + trailer) sit together under the trailer
-   embed, right-aligned — icon-only, no fixed positioning, since they're
-   tied to that piece of content rather than the whole viewport. */
+/* The two mute buttons (ambience + trailer) sit as one item inside
+   .btn-row, alongside Bandcamp/Connect — grouped tightly together since
+   they're a pair, at the same gap as everything else in the row. */
 .mute-toggles {
   display: flex;
-  justify-content: flex-end;
   gap: 12px;
-  margin-top: 12px;
 }
 
 .mute-toggle {
@@ -149,6 +147,7 @@ h1, h2 {
 .btn-row {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
   gap: 12px;
   margin-top: 28px;
