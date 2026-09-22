@@ -52,32 +52,14 @@ body {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* Both mute buttons (ambience + trailer) live in one fixed, centered
-   group at the top of the viewport, rather than each being pinned to a
-   corner — they're two independent volume controls for two layered
-   videos, so they read as a pair. */
+/* Both mute buttons (ambience + trailer) sit together under the trailer
+   embed, right-aligned — icon-only, no fixed positioning, since they're
+   tied to that piece of content rather than the whole viewport. */
 .mute-toggles {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
   display: flex;
-  gap: 20px;
-}
-
-.mute-toggle-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.mute-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.6);
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .mute-toggle {

@@ -88,6 +88,12 @@ function revealAndPlay(video) {
 
 const bgVideo = document.getElementById("bg-video");
 const trailerVideo = document.getElementById("trailer-video");
+
+// Trailer audio sits ~3dB quieter than its source file by default (once
+// unmuted). <video>.volume is a linear 0–1 gain, not dB, so this is the
+// standard conversion: 10^(-3/20) ≈ 0.708.
+if (trailerVideo) trailerVideo.volume = 0.708;
+
 revealAndPlay(bgVideo);
 revealAndPlay(trailerVideo);
 
