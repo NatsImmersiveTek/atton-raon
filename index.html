@@ -14,7 +14,7 @@
         your own file (search "bg-video" in this file) — this is the
         full-page background, not a section. Keep it reasonably
         compressed (a few MB, not tens) so the page still loads fast.
-     3. Fill in the tagline, About text, and the Vimeo / Bandcamp links.
+     3. Fill in the tagline, About text, and the Bandcamp link.
      4. Upcoming shows are NOT edited here — see README.md, they come
         live from a Google Sheet your client can edit directly.
      ============================================================ -->
@@ -64,19 +64,17 @@
       <cite>— Clash Magazine</cite>
     </blockquote>
     <div class="btn-row">
-      <a href="#" target="_blank" rel="noopener" class="contact-btn">Watch</a>
       <a href="signup.html" class="contact-btn">Connect</a>
-      <a href="https://attonraonmusic.bandcamp.com/album/truth-sensation-ep" target="_blank" rel="noopener" class="contact-btn">Listen</a>
     </div>
   </section>
 
-  <!-- TRAILER: same file as the background video, but as a normal,
-       controllable player (not autoplaying/looping/muted like the
-       background) so visitors can actually watch it properly with sound,
-       without it fighting the background loop. -->
+  <!-- TRAILER: separate file from the background video (assets/trailer.mp4,
+       not assets/bg-video.mp4) — a normal, controllable player (not
+       autoplaying/looping/muted like the background) so visitors can
+       actually watch it properly with sound. -->
   <section id="trailer">
     <div class="video-embed">
-      <video controls preload="metadata" src="assets/bg-video.mp4"></video>
+      <video controls preload="metadata" src="assets/trailer.mp4"></video>
     </div>
   </section>
 
@@ -86,6 +84,13 @@
     <ul id="shows-list" class="shows-list">
       <li class="shows-status">Loading shows…</li>
     </ul>
+  </section>
+
+  <!-- BANDCAMP -->
+  <section id="links">
+    <div class="btn-row">
+      <a href="https://attonraonmusic.bandcamp.com/album/truth-sensation-ep" target="_blank" rel="noopener" class="contact-btn">Bandcamp</a>
+    </div>
   </section>
 
 </main>
