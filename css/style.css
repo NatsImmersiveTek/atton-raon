@@ -52,11 +52,35 @@ body {
   background: rgba(0, 0, 0, 0.2);
 }
 
-.mute-toggle {
+/* Both mute buttons (ambience + trailer) live in one fixed, centered
+   group at the top of the viewport, rather than each being pinned to a
+   corner — they're two independent volume controls for two layered
+   videos, so they read as a pair. */
+.mute-toggles {
   position: fixed;
   top: 20px;
-  right: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 5;
+  display: flex;
+  gap: 20px;
+}
+
+.mute-toggle-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.mute-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mute-toggle {
   width: 44px;
   height: 44px;
   padding: 0;
@@ -179,18 +203,14 @@ h1, h2 {
   width: 100%;
   height: 100%;
   display: block;
+  /* Same reveal pattern as the background video: plain black box until a
+     real frame is ready, then fade in, rather than popping in abruptly. */
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
-/* Hide the volume/mute portion of the native player controls, keeping
-   play, seek bar, and fullscreen. Only Chrome/Safari/Edge (WebKit/Blink)
-   expose these — there's no standard way to remove just one piece of the
-   native controls, and Firefox has no equivalent, so this is "hidden on
-   most browsers" rather than guaranteed everywhere. Fully custom controls
-   would be the only universal fix, which is more than this needs. */
-.video-embed video::-webkit-media-controls-mute-button,
-.video-embed video::-webkit-media-controls-volume-slider,
-.video-embed video::-webkit-media-controls-volume-slider-container {
-  display: none !important;
+.video-embed video.loaded {
+  opacity: 1;
 }
 
 .quote {

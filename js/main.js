@@ -59,30 +59,25 @@ window.addEventListener("resize", () => {
 // alongside the background video itself, and broke on phones. Title is
 // plain text again for now — see style.css for the styling.)
 
-// Background video: fade it in once a real frame is actually available.
-// Self-hosted <video> gives a genuinely reliable signal for this (unlike
-// the old cross-origin YouTube embed, where neither the iframe's "load"
-// event nor its postMessage-based state events lined up with when a frame
-// was actually visibly painted) — "loadeddata" fires exactly when the
-// first frame is decoded and ready to show.
-const bgVideo = document.getElementById("bg-video");
-if (bgVideo) {
-  bgVideo.addEventListener("loadeddata", () => bgVideo.classList.add("loaded"));
+// Both video layers (background ambience + trailer) use the same reveal
+// and autoplay approach — self-hosted <video> gives a genuinely reliable
+// "first frame ready" signal via "loadeddata", unlike the old cross-origin
+// YouTube embed. Some mobile browsers also don't reliably honor the plain
+// "autoplay" HTML attribute by itself (even with muted + playsinline,
+// which is supposed to be enough), so each one also gets an explicit
+// .play() call with a first-tap fallback.
+function revealAndPlay(video) {
+  if (!video) return;
+  video.addEventListener("loadeddata", () => video.classList.add("loaded"));
   // Fallback in case that event is somehow missed (e.g. video already
   // cached and ready before the listener attaches).
-  if (bgVideo.readyState >= 2) bgVideo.classList.add("loaded");
+  if (video.readyState >= 2) video.classList.add("loaded");
 
-  // Some mobile browsers don't reliably honor the plain "autoplay" HTML
-  // attribute by itself (even with muted + playsinline, which is
-  // supposed to be enough) — showing a paused/"tap to play" state
-  // instead. Calling .play() explicitly is more reliable in practice. If
-  // it's still blocked, resume on the visitor's very first tap/click
-  // anywhere on the page, which every browser always allows.
   const tryPlay = () => {
-    const p = bgVideo.play();
+    const p = video.play();
     if (p && typeof p.catch === "function") {
       p.catch(() => {
-        const resume = () => bgVideo.play().catch(() => {});
+        const resume = () => video.play().catch(() => {});
         document.addEventListener("touchstart", resume, { once: true, passive: true });
         document.addEventListener("click", resume, { once: true });
       });
@@ -91,23 +86,28 @@ if (bgVideo) {
   tryPlay();
 }
 
-// Sound toggle: the video autoplays muted (required by every browser), this
-// button lets a visitor turn it on. Self-hosted video needs none of the
-// external-API machinery the old YouTube embed did — it's just a property
-// on the element itself.
-const muteBtn = document.getElementById("mute-toggle");
-if (muteBtn && bgVideo) {
-  muteBtn.addEventListener("click", () => {
-    bgVideo.muted = !bgVideo.muted;
-    const muted = bgVideo.muted;
-    muteBtn.classList.toggle("is-muted", muted);
-    muteBtn.setAttribute("aria-pressed", String(muted));
-    muteBtn.setAttribute(
-      "aria-label",
-      muted ? "Unmute background video" : "Mute background video"
-    );
+const bgVideo = document.getElementById("bg-video");
+const trailerVideo = document.getElementById("trailer-video");
+revealAndPlay(bgVideo);
+revealAndPlay(trailerVideo);
+
+// Sound toggles: each video autoplays muted (required by every browser),
+// these buttons let a visitor turn each one on independently. Self-hosted
+// video needs none of the external-API machinery the old YouTube embed
+// did — it's just a property on the element itself.
+function bindMuteToggle(buttonId, video, label) {
+  const btn = document.getElementById(buttonId);
+  if (!btn || !video) return;
+  btn.addEventListener("click", () => {
+    video.muted = !video.muted;
+    const muted = video.muted;
+    btn.classList.toggle("is-muted", muted);
+    btn.setAttribute("aria-pressed", String(muted));
+    btn.setAttribute("aria-label", (muted ? "Unmute " : "Mute ") + label);
   });
 }
+bindMuteToggle("mute-toggle", bgVideo, "background ambience");
+bindMuteToggle("trailer-mute-toggle", trailerVideo, "trailer video");
 
 const listEl = document.getElementById("shows-list");
 

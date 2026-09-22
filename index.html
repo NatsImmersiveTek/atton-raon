@@ -41,12 +41,27 @@
   <div class="bg-scrim"></div>
 </div>
 
-<!-- Background video is muted by default (autoplay policy) — this lets
-     visitors turn sound on. -->
-<button id="mute-toggle" class="mute-toggle is-muted" type="button" aria-pressed="true" aria-label="Unmute background video">
-  <svg class="icon icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
-  <svg class="icon icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
-</button>
+<!-- Both background layers (ambience video + trailer video) autoplay
+     muted by default (autoplay policy) — these two buttons let visitors
+     turn each one's sound on independently. Grouped together and
+     centered rather than corner-pinned, since they now control two
+     related but separate audio layers. -->
+<div class="mute-toggles">
+  <div class="mute-toggle-group">
+    <button id="mute-toggle" class="mute-toggle is-muted" type="button" aria-pressed="true" aria-label="Unmute background ambience">
+      <svg class="icon icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
+      <svg class="icon icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+    </button>
+    <span class="mute-label">Ambience</span>
+  </div>
+  <div class="mute-toggle-group">
+    <button id="trailer-mute-toggle" class="mute-toggle is-muted" type="button" aria-pressed="true" aria-label="Unmute trailer video">
+      <svg class="icon icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
+      <svg class="icon icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+    </button>
+    <span class="mute-label">Trailer</span>
+  </div>
+</div>
 
 <main>
 
@@ -69,12 +84,12 @@
   </section>
 
   <!-- TRAILER: separate file from the background video (assets/trailer.mp4,
-       not assets/bg-video.mp4) — a normal, controllable player (not
-       autoplaying/looping/muted like the background) so visitors can
-       actually watch it properly with sound. -->
+       not assets/bg-video.mp4). Now a second ambient layer, same pattern
+       as the background — autoplaying, looping, muted by default — with
+       its own mute button above instead of native play controls. -->
   <section id="trailer">
     <div class="video-embed">
-      <video controls preload="metadata" src="assets/trailer.mp4"></video>
+      <video id="trailer-video" autoplay muted loop playsinline preload="auto" src="assets/trailer.mp4"></video>
     </div>
   </section>
 
