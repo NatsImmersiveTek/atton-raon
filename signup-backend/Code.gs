@@ -24,18 +24,20 @@ function doPost(e) {
       return respond({ ok: true });
     }
 
-    // Neither field is required on its own, but a submission with both
-    // left blank isn't useful to anyone — reject that case only.
-    if (!email && !phone) {
-      return respond({ ok: false, error: "Enter an email or phone number." });
+    // No field is required on its own — someone might just want to leave
+    // a message about a venue with no contact info — but all three left
+    // blank isn't a real submission.
+    if (!email && !phone && !message) {
+      return respond({ ok: false, error: "Enter an email, phone number, or message." });
     }
 
     const sheet = getOrCreateSheet();
     sheet.appendRow([new Date(), email, phone, message]);
 
+    const who = email || phone || "no contact info given";
     MailApp.sendEmail({
       to: NOTIFY_EMAIL,
-      subject: message ? "New message: " + (email || phone) : "New signup: " + (email || phone),
+      subject: message ? "New message: " + who : "New signup: " + who,
       body:
         "Email: " + (email || "(not given)") + "\n" +
         "Phone: " + (phone || "(not given)") + "\n" +

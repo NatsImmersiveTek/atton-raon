@@ -20,13 +20,15 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
-  // Neither field has a "required" attribute (someone might only want to
-  // give a phone number, or only an email) — but both blank isn't a real
-  // submission. We can't read the backend's response to catch this after
-  // the fact (cross-origin iframe), so it has to be caught here instead.
+  // No field has a "required" attribute (someone might only want to give
+  // a phone number, or just leave a message about a venue with no contact
+  // info at all) — but a submission with all three blank isn't real. We
+  // can't read the backend's response to catch this after the fact
+  // (cross-origin iframe), so it has to be caught here instead.
   const email = document.getElementById("email").value.trim();
   const phone = document.getElementById("phone").value.trim();
-  if (!email && !phone) {
+  const message = document.getElementById("message").value.trim();
+  if (!email && !phone && !message) {
     e.preventDefault();
     if (formError) formError.hidden = false;
     return;
