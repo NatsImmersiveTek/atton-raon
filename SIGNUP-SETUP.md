@@ -68,6 +68,18 @@ deployments → edit (pencil icon) → New version → Deploy** to push the
 change live. The Web App URL stays the same across versions, so nothing
 in `signup.html` needs to change when you do this.
 
+### Adding the Message field (already done in this repo's code)
+
+The form now also collects a free-text "Message" field, so bookers/venues
+can describe a space they'd like Atton=Raon to play. To pick this up:
+
+1. Copy the updated `signup-backend/Code.gs` into the Apps Script editor
+   and redeploy (steps above).
+2. If your Sheet already has existing "Signups" rows, the script won't
+   retroactively add a header for the new column — manually type
+   `Message` into cell **D1** of the Signups tab once, so the column has a
+   label going forward.
+
 ## About the QR code
 
 Once the page is live with a real domain, print a QR code pointing at:

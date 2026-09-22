@@ -307,7 +307,8 @@ footer {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.field input {
+.field input,
+.field textarea {
   width: 100%;
   background: #000;
   color: #fff;
@@ -317,7 +318,12 @@ footer {
   padding: 12px;
 }
 
-.field input:focus {
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }

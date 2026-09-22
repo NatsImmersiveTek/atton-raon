@@ -14,6 +14,7 @@ function doPost(e) {
     const params = (e && e.parameter) || {};
     const email = (params.email || "").trim();
     const phone = (params.phone || "").trim();
+    const message = (params.message || "").trim();
     const honeypot = (params.company || "").trim();
 
     // Bots that fill in every field tend to fill this one too — the real
@@ -30,14 +31,15 @@ function doPost(e) {
     }
 
     const sheet = getOrCreateSheet();
-    sheet.appendRow([new Date(), email, phone]);
+    sheet.appendRow([new Date(), email, phone, message]);
 
     MailApp.sendEmail({
       to: NOTIFY_EMAIL,
-      subject: "New signup: " + (email || phone),
+      subject: message ? "New message: " + (email || phone) : "New signup: " + (email || phone),
       body:
         "Email: " + (email || "(not given)") + "\n" +
         "Phone: " + (phone || "(not given)") + "\n" +
+        "Message: " + (message || "(none)") + "\n" +
         "Submitted: " + new Date().toString(),
     });
 
@@ -52,7 +54,7 @@ function getOrCreateSheet() {
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(["Timestamp", "Email", "Phone"]);
+    sheet.appendRow(["Timestamp", "Email", "Phone", "Message"]);
   }
   return sheet;
 }
