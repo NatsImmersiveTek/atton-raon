@@ -181,6 +181,18 @@ h1, h2 {
   display: block;
 }
 
+/* Hide the volume/mute portion of the native player controls, keeping
+   play, seek bar, and fullscreen. Only Chrome/Safari/Edge (WebKit/Blink)
+   expose these — there's no standard way to remove just one piece of the
+   native controls, and Firefox has no equivalent, so this is "hidden on
+   most browsers" rather than guaranteed everywhere. Fully custom controls
+   would be the only universal fix, which is more than this needs. */
+.video-embed video::-webkit-media-controls-mute-button,
+.video-embed video::-webkit-media-controls-volume-slider,
+.video-embed video::-webkit-media-controls-volume-slider-container {
+  display: none !important;
+}
+
 .quote {
   text-align: center;
 }
