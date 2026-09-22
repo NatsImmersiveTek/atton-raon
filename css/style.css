@@ -153,6 +153,24 @@ h1, h2 {
   margin: 0;
 }
 
+#trailer {
+  padding-top: 0;
+}
+
+.video-embed {
+  max-width: 640px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid #fff;
+}
+
+.video-embed video {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .quote {
   text-align: center;
 }

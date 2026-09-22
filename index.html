@@ -70,6 +70,16 @@
     </div>
   </section>
 
+  <!-- TRAILER: same file as the background video, but as a normal,
+       controllable player (not autoplaying/looping/muted like the
+       background) so visitors can actually watch it properly with sound,
+       without it fighting the background loop. -->
+  <section id="trailer">
+    <div class="video-embed">
+      <video controls preload="metadata" src="assets/bg-video.mp4"></video>
+    </div>
+  </section>
+
   <!-- UPCOMING SHOWS (loaded live from a Google Sheet, see README.md) -->
   <section id="shows">
     <h2>Shows</h2>
